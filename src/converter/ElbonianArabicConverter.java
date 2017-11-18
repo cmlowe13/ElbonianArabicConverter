@@ -73,7 +73,11 @@ public class ElbonianArabicConverter{
         }
         else {
             //number is an elbonian
-            for (i = 0; i < number.length() ; i++) {
+            /*if (!number.matches("MCXIDeLmVw")){
+                badElbNum = true;
+            }*/
+
+            for (i = 0; i <= number.length() ; i++) {
                 if (number.charAt(i) == 'M') {
                     Mcount+=1;
                 }
@@ -103,6 +107,9 @@ public class ElbonianArabicConverter{
                 }
                 if (number.charAt(i) == 'w') {
                     wcount+=1;
+                }
+                else {
+                    badElbNum = true;
                 }
             }
             if (Mcount > 3 || Ccount > 3 ||  Xcount > 3 || Icount>3 || Dcount > 1 || ecount > 1 || Lcount > 1 || mcount > 1 || Vcount > 1 || wcount > 1){
@@ -162,17 +169,6 @@ public class ElbonianArabicConverter{
             return Integer.parseInt(number);
         }
         else {
-            int t = 0;
-            int M = 1000;
-            int C = 100;
-            int X = 10;
-            int I = 1;
-            int D = 500;
-            int L = 50;
-            int V = 5;
-            int e = 400;
-            int m = 40;
-            int w = 4;
 
             for (int i = 0; i < number.length(); i++) {
                 if (number.charAt(i) == 'M') {
