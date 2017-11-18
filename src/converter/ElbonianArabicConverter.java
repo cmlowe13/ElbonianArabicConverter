@@ -64,7 +64,7 @@ public class ElbonianArabicConverter{
             arabic = Integer.parseInt(number);
             try {
                 Integer arabicNum = Integer.parseInt(number);
-                if (arabicNum <= 1 || arabicNum >= 4332) {
+                if (arabicNum < 1 || arabicNum >= 4332) {
                     badArabNum = true;
                 }
             } catch (NumberFormatException e) {
