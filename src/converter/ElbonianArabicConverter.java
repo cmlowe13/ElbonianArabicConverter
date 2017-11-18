@@ -12,7 +12,17 @@ import java.lang.*;
  * @version 3/18/17
  */
 public class ElbonianArabicConverter{
-
+    int t = 0;
+    int M = 1000;
+    int C = 100;
+    int X = 10;
+    int I = 1;
+    int D = 500;
+    int L = 50;
+    int V = 5;
+    int e = 400;
+    int m = 40;
+    int w = 4;
     // A string that holds the number (Elbonian or Arabic) you would like to convert
     private final String number;
    // private final Double anumber;
@@ -32,19 +42,9 @@ public class ElbonianArabicConverter{
      */
     public ElbonianArabicConverter(String number) throws MalformedNumberException, ValueOutOfBoundsException {
         // TODO check to see if the number is valid, then set it equal to the string
+
         boolean badArabNum = false;
         boolean badElbNum = false;
-
-        try {
-            Integer arabicNum = Integer.parseInt(number);
-            if (arabicNum <= 1 || arabicNum >= 4332) {
-                badArabNum = true;
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-        String elbonianNum = number;
         int Mcount = 0; //1000
         int Ccount = 0; //100
         int Xcount = 0; //10
@@ -57,50 +57,74 @@ public class ElbonianArabicConverter{
         int Vcount = 0; //5
         int wcount = 0; //4
 
-        int number_check = this.toArabic();
+        int i = 0;
+        int arabic = 0;
+
+        if (isNumeric(number)) {
+            arabic = Integer.parseInt(number);
+            try {
+                Integer arabicNum = Integer.parseInt(number);
+                if (arabicNum <= 1 || arabicNum >= 4332) {
+                    badArabNum = true;
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            //number is an elbonian
+            for (i = 0; i < number.length() ; i++) {
+                if (number.charAt(i) == 'M') {
+                    Mcount+=1;
+                }
+                if (number.charAt(i) == 'C') {
+                    Ccount+=1;
+                }
+                if (number.charAt(i) == 'X') {
+                    Xcount+=1;
+                }
+                if (number.charAt(i) == 'I') {
+                    Icount+=1;
+                }
+                if (number.charAt(i) == 'D') {
+                    Dcount+=1;
+                }
+                if (number.charAt(i) == 'e') {
+                    ecount+=1;
+                }
+                if (number.charAt(i) == 'L') {
+                    Lcount+=1;
+                }
+                if (number.charAt(i) == 'm') {
+                    mcount+=1;
+                }
+                if (number.charAt(i) == 'V') {
+                    Vcount+=1;
+                }
+                if (number.charAt(i) == 'w') {
+                    wcount+=1;
+                }
+            }
+            if (Mcount > 3 || Ccount > 3 ||  Xcount > 3 || Icount>3 || Dcount > 1 || ecount > 1 || Lcount > 1 || mcount > 1 || Vcount > 1 || wcount > 1){
+                badElbNum = true;
+            }
+        }
+
+
+
+
+
+
+ /*       int number_check = this.toArabic();
         if (number.equals(Integer.toString(number_check))){
             badElbNum = true;
         }
 
         if (!elbonianNum.matches("MCXIDeLmVw")){
             badElbNum = true;
-        }
+        }*/
 
-        for (int i = 0; i < elbonianNum.length() ; i++) {
-            if (elbonianNum.charAt(i) == 'M') {
-                Mcount+=1;
-            }
-            if (elbonianNum.charAt(i) == 'C') {
-                Ccount+=1;
-            }
-            if (elbonianNum.charAt(i) == 'X') {
-                Xcount+=1;
-            }
-            if (elbonianNum.charAt(i) == 'I') {
-                Icount+=1;
-            }
-            if (elbonianNum.charAt(i) == 'D') {
-                Dcount+=1;
-            }
-            if (elbonianNum.charAt(i) == 'e') {
-                ecount+=1;
-            }
-            if (elbonianNum.charAt(i) == 'L') {
-                Lcount+=1;
-            }
-            if (elbonianNum.charAt(i) == 'm') {
-                mcount+=1;
-            }
-            if (elbonianNum.charAt(i) == 'V') {
-                Vcount+=1;
-            }
-            if (elbonianNum.charAt(i) == 'w') {
-                wcount+=1;
-            }
-        }
-        if (Mcount > 3 || Ccount > 3 ||  Xcount > 3 || Icount>3 || Dcount > 1 || ecount > 1 || Lcount > 1 || mcount > 1 || Vcount > 1 || wcount > 1){
-            badElbNum = true;
-        }
+
 
         if (badArabNum == true) {
             throw new ValueOutOfBoundsException("Number is out of range");
