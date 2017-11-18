@@ -218,9 +218,11 @@ public class ElbonianArabicConverter{
      */
     public String toElbonian() {
         // TODO Fill in the method's body
-        if (number.matches("MCXIDeLmVw")) {
+
+        if (!isNumeric(number)){
             return number;
-        } else {
+        }
+        else {
             int number2 = Integer.parseInt(number);
             String s = "";
             while (number2 >= 1000) {
