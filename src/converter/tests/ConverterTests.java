@@ -34,8 +34,21 @@ public class ConverterTests {
         throw new ValueOutOfBoundsException("TEST");
     }
 
+//OUR TESTS
+    @Test
+    public void OurElbonianToArabicSampleTest() throws MalformedNumberException, ValueOutOfBoundsException {
+        ElbonianArabicConverter converter = new ElbonianArabicConverter("3000");
+        assertEquals(converter.toElbonian(), "MMM");
+    }
+
+
+
+
     @Test(expected = MalformedNumberException.class)
     public void valueOutOfBoundsTest2() throws MalformedNumberException, ValueOutOfBoundsException {
         ElbonianArabicConverter converter1 = new ElbonianArabicConverter("P");
+        ElbonianArabicConverter converter2 = new ElbonianArabicConverter("PLOP");
+        ElbonianArabicConverter converter3 = new ElbonianArabicConverter("MMMMM");
+
     }
 }

@@ -72,40 +72,36 @@ public class ElbonianArabicConverter{
             }
         }
         else {
-            //number is an elbonian
-            /*if (!number.matches("MCXIDeLmVw")){
-                badElbNum = true;
-            }*/
-
-            for (i = 0; i <= number.length() ; i++) {
+        //elbonian
+            for (i = 0; i < number.length() ; i++) {
                 if (number.charAt(i) == 'M') {
                     Mcount+=1;
                 }
-                if (number.charAt(i) == 'C') {
+                else if (number.charAt(i) == 'C') {
                     Ccount+=1;
                 }
-                if (number.charAt(i) == 'X') {
+                else if (number.charAt(i) == 'X') {
                     Xcount+=1;
                 }
-                if (number.charAt(i) == 'I') {
+                else if (number.charAt(i) == 'I') {
                     Icount+=1;
                 }
-                if (number.charAt(i) == 'D') {
+                else if (number.charAt(i) == 'D') {
                     Dcount+=1;
                 }
-                if (number.charAt(i) == 'e') {
+                else if (number.charAt(i) == 'e') {
                     ecount+=1;
                 }
-                if (number.charAt(i) == 'L') {
+                else if (number.charAt(i) == 'L') {
                     Lcount+=1;
                 }
-                if (number.charAt(i) == 'm') {
+                else if (number.charAt(i) == 'm') {
                     mcount+=1;
                 }
-                if (number.charAt(i) == 'V') {
+                else if (number.charAt(i) == 'V') {
                     Vcount+=1;
                 }
-                if (number.charAt(i) == 'w') {
+                else if (number.charAt(i) == 'w') {
                     wcount+=1;
                 }
                 else {
