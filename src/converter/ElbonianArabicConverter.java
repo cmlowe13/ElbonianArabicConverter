@@ -57,10 +57,8 @@ public class ElbonianArabicConverter{
         int Vcount = 0; //5
         int wcount = 0; //4
 
-        String pattern = "MCXIDeLmVw";
-
         int number_check = this.toArabic();
-        if (number != Integer.toString(number_check)){
+        if (number.equals(Integer.toString(number_check))){
             badElbNum = true;
         }
 
@@ -126,9 +124,10 @@ public class ElbonianArabicConverter{
      * @return An arabic value
      */
     public static boolean isNumeric(String str) {
-        for (char c : str.toCharArray()) {
-            if (!Character.isDigit(c)){
-                return false;
+        int size = str.length();
+        for (int i = 0; i<size; i++) {
+                if (!Character.isDigit(str.charAt(i))){
+                    return false;
             }
         }
         return true;
