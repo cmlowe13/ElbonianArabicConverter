@@ -1,7 +1,9 @@
 package converter;
 
+import com.sun.deploy.util.StringUtils;
 import converter.exceptions.MalformedNumberException;
 import converter.exceptions.ValueOutOfBoundsException;
+import java.lang.*;
 
 /**
  * This class implements a converter that takes a string that represents a number in either the
@@ -9,7 +11,7 @@ import converter.exceptions.ValueOutOfBoundsException;
  *
  * @version 3/18/17
  */
-public class ElbonianArabicConverter {
+public class ElbonianArabicConverter{
 
     // A string that holds the number (Elbonian or Arabic) you would like to convert
     private final String number;
@@ -29,10 +31,92 @@ public class ElbonianArabicConverter {
      * in the Elbonian number system.
      */
     public ElbonianArabicConverter(String number) throws MalformedNumberException, ValueOutOfBoundsException {
-
         // TODO check to see if the number is valid, then set it equal to the string
+        boolean badArabNum = false;
+        boolean badElbNum = false;
+
+        try {
+            Integer arabicNum = Integer.parseInt(number);
+            if (arabicNum <= 1 || arabicNum >= 4332) {
+                badArabNum = true;
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        String elbonianNum = number;
+        int Mcount = 0; //1000
+        int Ccount = 0; //100
+        int Xcount = 0; //10
+        int Icount = 0; //1
+        // can be used once
+        int Dcount = 0; //500
+        int ecount = 0; //400
+        int Lcount = 0; //50
+        int mcount = 0; //40
+        int Vcount = 0; //5
+        int wcount = 0; //4
+
+        String pattern = "MCXIDeLmVw";
+
+        int number_check = this.toArabic();
+        if (number != Integer.toString(number_check)){
+            badElbNum = true;
+        }
+
+        if (!elbonianNum.matches("MCXIDeLmVw")){
+            badElbNum = true;
+        }
+
+        for (int i = 0; i < elbonianNum.length() ; i++) {
+            if (elbonianNum.charAt(i) == 'M') {
+                Mcount+=1;
+            }
+            if (elbonianNum.charAt(i) == 'C') {
+                Ccount+=1;
+            }
+            if (elbonianNum.charAt(i) == 'X') {
+                Xcount+=1;
+            }
+            if (elbonianNum.charAt(i) == 'I') {
+                Icount+=1;
+            }
+            if (elbonianNum.charAt(i) == 'D') {
+                Dcount+=1;
+            }
+            if (elbonianNum.charAt(i) == 'e') {
+                ecount+=1;
+            }
+            if (elbonianNum.charAt(i) == 'L') {
+                Lcount+=1;
+            }
+            if (elbonianNum.charAt(i) == 'm') {
+                mcount+=1;
+            }
+            if (elbonianNum.charAt(i) == 'V') {
+                Vcount+=1;
+            }
+            if (elbonianNum.charAt(i) == 'w') {
+                wcount+=1;
+            }
+        }
+        if (Mcount > 3 || Ccount > 3 ||  Xcount > 3 || Icount>3 || Dcount > 1 || ecount > 1 || Lcount > 1 || mcount > 1 || Vcount > 1 || wcount > 1){
+            badElbNum = true;
+        }
+
+        if (badArabNum == true) {
+            throw new ValueOutOfBoundsException("Number is out of range");
+        }
+        if (badElbNum == true) {
+            throw new MalformedNumberException("String is not in correct Elbonian format");
+        }
+
         this.number = number;
-       // this.anumber = anumber;
+
+    }
+
+    public String getNumber() {
+        return number;
     }
 
     /**
@@ -41,22 +125,67 @@ public class ElbonianArabicConverter {
      *
      * @return An arabic value
      */
-    public int toArabic(String number) {
+    public static boolean isNumeric(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)){
+                return false;
+            }
+        }
+        return true;
+    }
+    public int toArabic(){
         // TODO Fill in the method's body
-        int t = 0;
-        int M = 1000;
-        int C = 100;
-        int X = 10;
-        int I = 1;
-        int D = 500;
-        int L = 50;
-        int V = 5;
-        int e = 400;
-        int m = 40;
-        int w = 4;
+        if (isNumeric(number)){
+            return Integer.parseInt(number);
+        }
+        else {
+            int t = 0;
+            int M = 1000;
+            int C = 100;
+            int X = 10;
+            int I = 1;
+            int D = 500;
+            int L = 50;
+            int V = 5;
+            int e = 400;
+            int m = 40;
+            int w = 4;
 
-        if ()
-        return 1;
+            for (int i = 0; i < number.length(); i++) {
+                if (number.charAt(i) == 'M') {
+                    t += M;
+                }
+                if (number.charAt(i) == 'C') {
+                    t += C;
+                }
+                if (number.charAt(i) == 'X') {
+                    t += X;
+                }
+                if (number.charAt(i) == 'I') {
+                    t += I;
+                }
+                if (number.charAt(i) == 'D') {
+                    t += D;
+                }
+                if (number.charAt(i) == 'L') {
+                    t += L;
+                }
+                if (number.charAt(i) == 'V') {
+                    t += V;
+                }
+                if (number.charAt(i) == 'e') {
+                    t += e;
+                }
+                if (number.charAt(i) == 'm') {
+                    t += m;
+                }
+                if (number.charAt(i) == 'w') {
+                    t += w;
+
+                }
+            }
+            return t;
+        }
     }
 
     /**
@@ -64,80 +193,55 @@ public class ElbonianArabicConverter {
      *
      * @return An Elbonian value
      */
-    public String toElbonian(int number) {
+    public String toElbonian() {
         // TODO Fill in the method's body
-        String s = "";
-        if (number < 1 || number >= 4332){
-            //  throw new ValueOutOfBoundsException;
-            return "Invalid input. Must be between 1 and 3999";
-        }
-        else{
-            //can be used three times
-            int Mcount = 0; //1000
-            int Ccount = 0; //100
-            int Xcount = 0; //10
-            int Icount = 0; //1
-            // can be used once
-            int Dcount = 0; //500
-            int ecount = 0; //400
-            int Lcount = 0; //50
-            int mcount = 0; //40
-            int Vcount = 0; //5
-            int wcount = 0; //4
-
-            while (number >= 1000 && Mcount < 3) {
-                s+="M";
-                number-=1000;
-                Mcount+=1;
+        if (number.matches("MCXIDeLmVw")) {
+            return number;
+        } else {
+            int number2 = Integer.parseInt(number);
+            String s = "";
+            while (number2 >= 1000) {
+                s += "M";
+                number2 -= 1000;
             }
-            while (number >= 500 && Dcount < 1) {
-                s+="D";
-                number-=500;
-                Dcount+=1;
+            while (number2 >= 500) {
+                s += "D";
+                number2 -= 500;
             }
-            while (number >= 400 && ecount < 1) {
-                s+="e";
-                number-=400;
-                ecount+=1;
+            while (number2 >= 400) {
+                s += "e";
+                number2 -= 400;
             }
-            while (number >= 100 && Ccount < 3) {
-                s+="C";
-                number-=100;
-                Ccount+=1;
+            while (number2 >= 100) {
+                s += "C";
+                number2 -= 100;
             }
-            while (number >= 50 && Lcount < 1) {
-                s+="L";
-                number-=50;
-                Lcount+=1;
+            while (number2 >= 50) {
+                s += "L";
+                number2 -= 50;
             }
-            while (number >= 40 && mcount < 1) {
-                s+="m";
-                number-=40;
-                mcount+=1;
+            while (number2 >= 40) {
+                s += "m";
+                number2 -= 40;
             }
-            while (number >= 10 && Xcount < 3) {
-                s+="X";
-                number-=10;
-                Xcount+=1;
+            while (number2 >= 10) {
+                s += "X";
+                number2 -= 10;
             }
-            while (number >= 5 && Vcount < 1) {
-                s+="V";
-                number-=5;
-                Vcount+=1;
+            while (number2 >= 5) {
+                s += "V";
+                number2 -= 5;
             }
-            while (number >= 4 && wcount < 1) {
-                s+="w";
-                number-=4;
-                wcount+=1;
+            while (number2 >= 4) {
+                s += "w";
+                number2 -= 4;
             }
-            while (number >= 1 && Icount < 3) {
-                s+="I";
-                number-=1;
-                Icount+=1;
+            while (number2 >= 1) {
+                s += "I";
+                number2 -= 1;
             }
 
+            return s;
         }
-        return s;
     }
-
 }
