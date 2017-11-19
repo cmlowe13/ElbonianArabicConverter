@@ -4,6 +4,8 @@ import com.sun.deploy.util.StringUtils;
 import converter.exceptions.MalformedNumberException;
 import converter.exceptions.ValueOutOfBoundsException;
 import java.lang.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class implements a converter that takes a string that represents a number in either the
@@ -25,7 +27,7 @@ public class ElbonianArabicConverter{
     int w = 4;
     // A string that holds the number (Elbonian or Arabic) you would like to convert
     private final String number;
-   // private final Double anumber;
+    // private final Double anumber;
 
     /**
      * Constructor for the ElbonianArabic class that takes a string. The string should contain a valid
@@ -49,7 +51,6 @@ public class ElbonianArabicConverter{
         int Ccount = 0; //100
         int Xcount = 0; //10
         int Icount = 0; //1
-        // can be used once
         int Dcount = 0; //500
         int ecount = 0; //400
         int Lcount = 0; //50
@@ -64,7 +65,7 @@ public class ElbonianArabicConverter{
             arabic = Integer.parseInt(number);
             try {
                 Integer arabicNum = Integer.parseInt(number);
-                if (arabicNum < 1 || arabicNum >= 4332) {
+                if (arabicNum <= 0 || arabicNum >= 4332) {
                     badArabNum = true;
                 }
             } catch (NumberFormatException e) {
@@ -72,7 +73,12 @@ public class ElbonianArabicConverter{
             }
         }
         else {
-        //elbonian
+            for (int j = 0; j < number.length()-1 ; j++) {
+                if (conversion(number.charAt(j)) < conversion(number.charAt(j + 1))) {
+                    badElbNum = true;
+                }
+            }
+
             for (i = 0; i < number.length() ; i++) {
                 if (number.charAt(i) == 'M') {
                     Mcount+=1;
@@ -108,40 +114,60 @@ public class ElbonianArabicConverter{
                     badElbNum = true;
                 }
             }
+
             if (Mcount > 3 || Ccount > 3 ||  Xcount > 3 || Icount>3 || Dcount > 1 || ecount > 1 || Lcount > 1 || mcount > 1 || Vcount > 1 || wcount > 1){
                 badElbNum = true;
             }
         }
-
-
-
-
-
-
- /*       int number_check = this.toArabic();
-        if (number.equals(Integer.toString(number_check))){
-            badElbNum = true;
-        }
-
-        if (!elbonianNum.matches("MCXIDeLmVw")){
-            badElbNum = true;
-        }*/
-
-
-
-        if (badArabNum == true) {
+        if (badArabNum) {
             throw new ValueOutOfBoundsException("Number is out of range");
         }
-        if (badElbNum == true) {
+        else if(badElbNum) {
             throw new MalformedNumberException("String is not in correct Elbonian format");
         }
-
-        this.number = number;
-
+        else{
+            this.number = number;
+        }
     }
 
     public String getNumber() {
         return number;
+    }
+
+    public int conversion(char c){
+        if (c == 'M'){
+            return M;
+        }
+        if (c == 'D') {
+            return D;
+        }
+        if (c == 'e') {
+            return e;
+        }
+        if (c == 'C') {
+            return C;
+        }
+        if (c == 'L') {
+            return L;
+        }
+        if (c == 'm') {
+            return m;
+        }
+        if (c == 'X') {
+            return X;
+        }
+        if (c == 'V') {
+            return V;
+        }
+        if (c == 'w') {
+            return w;
+        }
+        if (c == 'I') {
+            return I;
+        }
+        else {
+            return 0;
+        }
     }
 
     /**
@@ -151,14 +177,9 @@ public class ElbonianArabicConverter{
      * @return An arabic value
      */
     public static boolean isNumeric(String str) {
-        int size = str.length();
-        for (int i = 0; i<size; i++) {
-                if (!Character.isDigit(str.charAt(i))){
-                    return false;
-            }
-        }
-        return true;
+        return str.matches("-?\\d+(\\.\\d+)?");
     }
+
     public int toArabic(){
         // TODO Fill in the method's body
         if (isNumeric(number)){
@@ -257,7 +278,6 @@ public class ElbonianArabicConverter{
                 s += "I";
                 number2 -= 1;
             }
-
             return s;
         }
     }
